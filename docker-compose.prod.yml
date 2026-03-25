@@ -132,6 +132,14 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
       DERIVER_PROVIDER: google
       SUMMARY_PROVIDER: google
+      DREAM_PROVIDER: google
+      DREAM_MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__MEDIUM__PROVIDER: google
+      DIALECTIC__LEVELS__MEDIUM__MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__HIGH__PROVIDER: google
+      DIALECTIC__LEVELS__HIGH__MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__MAX__PROVIDER: google
+      DIALECTIC__LEVELS__MAX__MODEL: gemini-2.5-pro
       VECTOR_STORE_TYPE: pgvector
       LOG_LEVEL: INFO
     volumes:
@@ -158,6 +166,14 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
       DERIVER_PROVIDER: google
       SUMMARY_PROVIDER: google
+      DREAM_PROVIDER: google
+      DREAM_MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__MEDIUM__PROVIDER: google
+      DIALECTIC__LEVELS__MEDIUM__MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__HIGH__PROVIDER: google
+      DIALECTIC__LEVELS__HIGH__MODEL: gemini-2.5-flash
+      DIALECTIC__LEVELS__MAX__PROVIDER: google
+      DIALECTIC__LEVELS__MAX__MODEL: gemini-2.5-pro
       VECTOR_STORE_TYPE: pgvector
       DERIVER_ENABLED: "true"
       DERIVER_WORKERS: "1"
