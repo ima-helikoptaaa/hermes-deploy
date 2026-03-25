@@ -60,6 +60,8 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/muse
       REDIS_URL: redis://redis:6379
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
       PORT: 3001
       LLM_PROVIDER: gemini
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
