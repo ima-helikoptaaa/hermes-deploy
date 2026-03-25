@@ -114,7 +114,7 @@ services:
   honcho-api:
     build:
       context: ../honcho
-    entrypoint: ["sh", "docker/entrypoint.sh"]
+    entrypoint: ["sh", "-c", "python scripts/provision_db.py && exec fastapi run --host 0.0.0.0 src/main.py"]
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8000"
