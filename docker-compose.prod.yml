@@ -61,10 +61,10 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/muse
       REDIS_URL: redis://redis:6379
       PORT: 3001
-      LLM_PROVIDER: ${LLM_PROVIDER:-claude}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      LLM_PROVIDER: gemini
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
+      GOOGLE_PROJECT_ID: ${GOOGLE_PROJECT_ID}
+      GOOGLE_LOCATION: ${GOOGLE_LOCATION:-us-central1}
       REDDIT_CLIENT_ID: ${REDDIT_CLIENT_ID:-}
       REDDIT_CLIENT_SECRET: ${REDDIT_CLIENT_SECRET:-}
       REDDIT_USER_AGENT: ${REDDIT_USER_AGENT:-muse:v1.0.0}
@@ -74,6 +74,8 @@ services:
       DISCOVERY_CRON: ${DISCOVERY_CRON:-0 6 * * *}
       DIGEST_CRON: ${DIGEST_CRON:-0 7 * * *}
       BRAND_REMINDER_CRON: ${BRAND_REMINDER_CRON:-0 9,17 * * 1-5}
+    volumes:
+      - ./gcp-credentials.json:/run/secrets/gcp-credentials.json:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -121,10 +123,15 @@ services:
       CACHE_ENABLED: "true"
       CACHE_URL: redis://redis:6379/1?suppress=true
       AUTH_USE_AUTH: "false"
-      LLM_OPENAI_API_KEY: ${OPENAI_API_KEY}
-      LLM_ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      LLM_EMBEDDING_PROVIDER: gemini
+      GOOGLE_GENAI_USE_VERTEXAI: "true"
+      GOOGLE_CLOUD_PROJECT: ${GOOGLE_PROJECT_ID}
+      GOOGLE_CLOUD_LOCATION: ${GOOGLE_LOCATION:-us-central1}
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
       VECTOR_STORE_TYPE: pgvector
       LOG_LEVEL: INFO
+    volumes:
+      - ./gcp-credentials.json:/run/secrets/gcp-credentials.json:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -140,12 +147,17 @@ services:
       DB_CONNECTION_URI: postgresql+psycopg://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/honcho
       CACHE_ENABLED: "true"
       CACHE_URL: redis://redis:6379/1?suppress=true
-      LLM_OPENAI_API_KEY: ${OPENAI_API_KEY}
-      LLM_ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      LLM_EMBEDDING_PROVIDER: gemini
+      GOOGLE_GENAI_USE_VERTEXAI: "true"
+      GOOGLE_CLOUD_PROJECT: ${GOOGLE_PROJECT_ID}
+      GOOGLE_CLOUD_LOCATION: ${GOOGLE_LOCATION:-us-central1}
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
       VECTOR_STORE_TYPE: pgvector
       DERIVER_ENABLED: "true"
       DERIVER_WORKERS: "1"
       LOG_LEVEL: INFO
+    volumes:
+      - ./gcp-credentials.json:/run/secrets/gcp-credentials.json:ro
     depends_on:
       postgres:
         condition: service_healthy
