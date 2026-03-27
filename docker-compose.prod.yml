@@ -31,16 +31,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ─── RSSHub (for Muse content discovery) ───
-  rsshub:
-    image: diygod/rsshub:latest
-    restart: unless-stopped
-    environment:
-      NODE_ENV: production
-      CACHE_TYPE: memory
-      CACHE_EXPIRE: 600
-      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN:-}
-
   # ─── Backends ───
   exodus:
     build:
@@ -70,12 +60,8 @@ services:
       REDDIT_CLIENT_ID: ${REDDIT_CLIENT_ID:-}
       REDDIT_CLIENT_SECRET: ${REDDIT_CLIENT_SECRET:-}
       REDDIT_USER_AGENT: ${REDDIT_USER_AGENT:-muse:v1.0.0}
-      RSSHUB_URL: http://rsshub:1200
-      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN:-}
       PRODUCTHUNT_API_TOKEN: ${PRODUCTHUNT_API_TOKEN:-}
-      DISCOVERY_CRON: ${DISCOVERY_CRON:-0 6 * * *}
       DIGEST_CRON: ${DIGEST_CRON:-0 7 * * *}
-      BRAND_REMINDER_CRON: ${BRAND_REMINDER_CRON:-0 9,17 * * 1-5}
     volumes:
       - ./gcp-credentials.json:/run/secrets/gcp-credentials.json:ro
     depends_on:
@@ -83,8 +69,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      rsshub:
-        condition: service_started
 
   progression:
     build:
