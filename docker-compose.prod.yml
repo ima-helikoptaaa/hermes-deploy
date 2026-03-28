@@ -73,10 +73,14 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/progression
       FIREBASE_CREDENTIALS_JSON: ${FIREBASE_CREDENTIALS_JSON}
       CORS_ORIGINS: ${PROGRESSION_CORS_ORIGINS:-*}
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
       PORT: 8000
       AGENT_API_KEY: ${PROGRESSION_AGENT_API_KEY:-}
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   sisyphus:
