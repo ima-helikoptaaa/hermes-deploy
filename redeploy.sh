@@ -9,13 +9,17 @@ set -e
 
 cd /opt/hermes
 
-# Pull latest code
-for repo in exodus muse progression sisyphus honcho; do
-    echo "Pulling $repo..."
-    cd /opt/hermes/$repo && git pull
-done
+if [ -n "$1" ]; then
+    echo "Pulling $1..."
+    cd /opt/hermes/$1 && git pull
+else
+    for repo in exodus muse progression sisyphus honcho; do
+        echo "Pulling $repo..."
+        cd /opt/hermes/$repo && git pull
+    done
+fi
 
-cd /opt/hermes/hermes-deploy
+cd /opt/hermes/deploy
 
 if [ -n "$1" ]; then
     echo "Rebuilding and restarting $1..."
