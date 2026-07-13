@@ -46,6 +46,8 @@ services:
       PORTALS_CONFIG_PATH: /app/scripts/portals.yml
     volumes:
       - ../exodus/scripts/portals.yml:/app/scripts/portals.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       postgres:
         condition: service_healthy
