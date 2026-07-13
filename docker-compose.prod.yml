@@ -40,9 +40,12 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/exodus
       CORS_ORIGIN: ${EXODUS_CORS_ORIGIN:-*}
       PORT: 3000
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
-      AWS_REGION: ${AWS_REGION:-us-east-1}
+      LLM_API_BASE_URL: ${LLM_API_BASE_URL:-http://host.docker.internal:8000/v1}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-glm-5.2}
+      PORTALS_CONFIG_PATH: /app/scripts/portals.yml
+    volumes:
+      - ../exodus/scripts/portals.yml:/app/scripts/portals.yml:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -95,6 +98,20 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/sisyphus
       FIREBASE_CREDENTIALS_JSON: ${FIREBASE_CREDENTIALS_JSON}
       PORT: 3003
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  fortuna:
+    build:
+      context: ../fortuna/backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-hermes}:${POSTGRES_PASSWORD}@postgres:5432/fortuna
+      EXODUS_API_URL: http://exodus:3000/api
+      MUSE_API_URL: http://muse:3001/api
+      PROGRESSION_API_URL: http://progression:8000/api/v1
+      PORT: 3006
     depends_on:
       postgres:
         condition: service_healthy
@@ -223,6 +240,7 @@ services:
       - muse
       - progression
       - sisyphus
+      - fortuna
 
   certbot:
     image: certbot/certbot
